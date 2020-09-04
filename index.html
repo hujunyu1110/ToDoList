@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <title>ToDoList</title>
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <style>
+        body {
+            background: rgba(116, 199, 199, 0.61);
+        }
+
+        hr {
+            color: white;
+            opacity: 0.5;
+            margin: 2%;
+        }
+
+        input {
+            cursor: pointer;
+        }
+
+        #context {
+            width: 35%;
+            color: white;
+            opacity: 0.6;
+            position: absolute;
+            left: 52%;
+            top: 40%;
+            margin: -10% 0 0 -20%;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(53, 39, 39, 0.651);
+        }
+
+        #title {
+            text-align: center;
+            font-size: larger;
+        }
+
+        .list {
+            margin-left: 8%;
+        }
+
+        #input_vaule {
+            margin-top: 3%;
+            margin-left: 9%;
+            margin-right: 9%;
+            margin-bottom: 1%;
+            padding: 0px;
+            width: 80%;
+        }
+
+        .button {
+            text-align: center;
+            float: left;
+            padding: 1%;
+            margin: 2%;
+            margin-left: 13%;
+            width: 12%;
+            height: 2%;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(53, 39, 39, 0.651);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="context">
+        <p id="title">ToDoList</p>
+        <hr />
+        <div id="List"></div>
+        <input type="text" id="input_vaule">
+        <div>
+            <div class="button" id="sel_button">全选</div>
+            <div class="button" id="del_button">删除</div>
+            <div class="button" id="add_button">添加</div>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        /* TODO:储存在localStorage */
+        var item_array = [];
+        var item_obj = {
+            key: item_array
+        };
+        var item_json = localStorage.getItem("key");
+        if (item_json != null) {
+            var item_obj_tmp = JSON.parse(item_json);
+            item_array = item_obj_tmp.key;
+        }
+
+        /* TODO:遍历显示 */
+        for (i in item_array) {
+            $("#List").append("<input type='checkbox' name='ckb' class='list' value='" + item_array[i] + "'> " + item_array[i] + "<br/>");
+        }
+
+        /* TODO:添加 */
+        $("#add_button").click(function () {
+            let tmp = $("#input_vaule").val();
+            if (tmp != null && tmp != "") {
+                item_array.push(tmp);
+                item_obj.key = item_array;
+                item_json = JSON.stringify(item_obj);
+                localStorage.setItem("key", item_json);
+            }
+            location.reload();
+        });
+
+        $("body").keydown(function () {
+            if (event.keyCode == "13") {//keyCode=13是回车键
+                $("#add_button").click();
+            }
+        });
+
+        /* TODO:删除 */
+        $("#del_button").click(function () {
+            let arr_tmp = []
+            $("input[name='ckb']").each(function () {
+                if ($(this).is(":checked")) {
+                    arr_tmp.push($(this).val());
+                }
+            });
+            for (i in arr_tmp) {
+                for (j in item_array) {
+                    if (item_array[j] == arr_tmp[i]) {
+                        item_array.remove(arr_tmp[i]);
+                    }
+                }
+            }
+            item_obj.key = item_array;
+            item_json = JSON.stringify(item_obj);
+            localStorage.setItem("key", item_json);
+            location.reload();
+        });
+
+        /* TODO:全选 */
+        $("#sel_button").click(function () {
+            switch ($("#sel_button").text()) {
+                case "全选":
+                    $("input[name='ckb']").attr("checked", "true");
+                    $("#sel_button").text("不全选");
+                    break;
+                case "不全选":
+                    location.reload();
+                    break;
+            }
+        });
+
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+    });
+</script>
+
+</html>
