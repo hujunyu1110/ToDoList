@@ -2,10 +2,21 @@
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <title>ToDoList</title>
+
+    <meta charset="UTF-8" />
+    <meta name="author" content="louny" />
+    <meta name="keywords" content="ToDoList" />
+    <meta name="generator" content="Visual Studio Code" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- XXX:icon -->
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+
+    <!-- XXX:jQuery -->
     <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+
+    <!-- XXX:stylesheet text/css -->
     <style>
         body {
             background: rgba(116, 199, 199, 0.61);
@@ -66,11 +77,18 @@
     </style>
 </head>
 
+<!-- XXX:主体 活动标签由脚本动态加载 -->
+
 <body>
+
     <div id="context">
         <p id="title">ToDoList</p>
         <hr />
+
+        <!-- TODO:List中为活动标签 -->
         <div id="List"></div>
+
+        <!-- TODO:输入及操作 -->
         <input type="text" id="input_vaule">
         <div>
             <div class="button" id="sel_button">全选</div>
@@ -78,34 +96,59 @@
             <div class="button" id="add_button">添加</div>
         </div>
     </div>
+
 </body>
 
+<!-- TODO:JavaScript脚本 -->
 <script>
+
+    /**
+     * 存储每次进行覆盖
+     * 只记录剩余数组
+     * 每次更新刷新页面获取最新信息
+     */
+
     $(document).ready(function () {
-        /* TODO:储存在localStorage */
-        var item_array = [];
+        /* FIXME:储存在localStorage 仅为本地存储 可改为服务器 */
+        var item_array = []; //存储数组 /服务器无关 保留
         var item_obj = {
             key: item_array
-        };
+        }; //存储类 /服务器无关 保留
+
+        /* FIXME：使用本地存储获取 */
         var item_json = localStorage.getItem("key");
+
+        /* FIXME：使用服务器 */
+        //FIXME：登陆
+        //FIXME：注册
+        //FIXME：发送 / 接受
+
+        /* TODO:数据处理 读取/存储  参数(Json字符串 key:[]) */
+        function saveItem(item_json) {
+            /* 本地存储 */
+            localStorage.setItem("key", item_json);
+
+            /* 服务器存储 */
+        }
+
         if (item_json != null) {
             var item_obj_tmp = JSON.parse(item_json);
             item_array = item_obj_tmp.key;
         }
 
-        /* TODO:遍历显示 */
+        /* XXX:遍历显示 */
         for (i in item_array) {
             $("#List").append("<input type='checkbox' name='ckb' class='list' value='" + item_array[i] + "'> " + item_array[i] + "<br/>");
         }
 
-        /* TODO:添加 */
+        /* XXX:添加 */
         $("#add_button").click(function () {
             let tmp = $("#input_vaule").val();
             if (tmp != null && tmp != "") {
                 item_array.push(tmp);
                 item_obj.key = item_array;
                 item_json = JSON.stringify(item_obj);
-                localStorage.setItem("key", item_json);
+                saveItem(item_json);
             }
             location.reload();
         });
@@ -116,7 +159,7 @@
             }
         });
 
-        /* TODO:删除 */
+        /* XXX:删除 */
         $("#del_button").click(function () {
             let arr_tmp = []
             $("input[name='ckb']").each(function () {
@@ -133,11 +176,11 @@
             }
             item_obj.key = item_array;
             item_json = JSON.stringify(item_obj);
-            localStorage.setItem("key", item_json);
+            saveItem(item_json);
             location.reload();
         });
 
-        /* TODO:全选 */
+        /* XXX:全选 */
         $("#sel_button").click(function () {
             switch ($("#sel_button").text()) {
                 case "全选":
@@ -150,6 +193,7 @@
             }
         });
 
+        /* XXX:删除数组元素方法 */
         Array.prototype.indexOf = function (val) {
             for (var i = 0; i < this.length; i++) {
                 if (this[i] == val) return i;
