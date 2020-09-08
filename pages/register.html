@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>ToDoList</title>
+
+    <meta charset="UTF-8" />
+    <meta name="author" content="louny" />
+    <meta name="keywords" content="ToDoList" />
+    <meta name="generator" content="Visual Studio Code" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- XXX:icon -->
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon" />
+
+    <!-- XXX:jQuery -->
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <script src="../js/commom.js"></script>
+    <script src="../js/unit.js"></script>
+
+    <!-- XXX:stylesheet text/css -->
+    <style>
+    </style>
+</head>
+
+<!-- XXX:主体 活动标签由脚本动态加载 -->
+
+<body>
+
+</body>
+
+<!-- TODO:JavaScript脚本 -->
+<script>
+
+    $.get(Url + "/", function (data, status) {
+        console.log(data);
+        console.log(status);
+    });
+
+</script>
+
+</html>
